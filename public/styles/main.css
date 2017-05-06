@@ -4,13 +4,21 @@
 	font-family: 'Open Sans', sans-serif;
 }
 
+pre * {
+	font-family: inherit;
+}
+
 html, body {
 	background: #fff;
 }
 
 a {
-	color: #20a9d4;
+	color: #ecaa0f;
 	text-decoration: none;
+}
+
+p {
+	font-size: 16px;
 }
 
 header {
@@ -18,17 +26,17 @@ header {
 }
 
 header h1 {
-	color: #444;
+	color: #666;
 	font-size: 72px;
 	font-weight: 300;
 	margin: 0;
+	color: #9768b9;
 }
 
 header small {
-	color: #666;
+	color: #aaa;
 	font-size: 16px;
 	font-weight: 300;
-	font-family: 'Open Sans', sans-serif;
 	font-style: italic;
 	margin-left: 50px;
 }
@@ -38,6 +46,81 @@ header small .latin {
 }
 
 header p {
+	color: #666;
 	font-size: 20px;
 	margin-left: 50px;
+}
+
+main {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 0 100px;
+}
+
+main section {
+	width: 100%;
+}
+
+@media (max-width: 600px) {
+	header {
+		padding: 25px;
+	}
+
+	header small,
+	header p {
+		margin-left: 25px;
+	}
+
+	main {
+		padding: 0 25px;
+	}
+
+	pre {
+		font-size: 12px;
+	}
+
+	main section {
+		margin-top: 50px;
+	}
+}
+
+@media (min-width: 1300px) {
+	main section {
+		width: calc(100% / 2);
+	}
+}
+
+@media (min-width: 1850px) {
+	main section {
+		width: calc(100% / 3);
+	}
+}
+
+main section h2 {
+	font-weight: 500;
+}
+
+main section > :not(h2) {
+	margin-left: 25px !important;
+}
+
+pre[class*='language-'] {
+	border: 1px #ddd solid;
+}
+
+pre.inline {
+	display: inline-block;
+	padding: 0.5em !important;
+}
+
+footer {
+	text-align: center;
+	margin: 200px 0 25px;
+}
+
+footer p {
+	color: #888;
+	font-size: 12px;
+	margin: 5px;
 }
