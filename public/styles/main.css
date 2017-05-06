@@ -1,0 +1,43 @@
+
+* {
+	box-sizing: border-box;
+	font-family: 'Open Sans', sans-serif;
+}
+
+html, body {
+	background: #fff;
+}
+
+a {
+	color: #20a9d4;
+	text-decoration: none;
+}
+
+header {
+	padding: 100px;
+}
+
+header h1 {
+	color: #444;
+	font-size: 72px;
+	font-weight: 300;
+	margin: 0;
+}
+
+header small {
+	color: #666;
+	font-size: 16px;
+	font-weight: 300;
+	font-family: 'Open Sans', sans-serif;
+	font-style: italic;
+	margin-left: 50px;
+}
+
+header small .latin {
+	font-weight: 700;
+}
+
+header p {
+	font-size: 20px;
+	margin-left: 50px;
+}
