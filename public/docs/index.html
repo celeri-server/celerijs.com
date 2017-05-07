@@ -12,126 +12,334 @@
 		<h1>
 			<a href="/">Celeri</a>
 			<small>
-				<a href="https://github.com/celeri-server/http-server/releases">v1.1.0</a>
+				<a href="https://github.com/celeri-server/http-server/releases">v1.1.1</a>
 			</small>
 		</h1>
 	</header>
 
 	<div class="content-wrapper">
-		<nav>
-			<h2>Documenation</h2>
-			<ul>
-				<li><a href="#installation">Installation</a></li>
-				<li><a href="#creating-a-server">Creating a Server</a></li>
-				<li><a href="#routing">Routing</a></li>
-				<li><a href="#middleware">Middleware</a></li>
-			</ul>
-		</nav>
+		<div class="body">
+			<nav>
+				<h2>Introduction</h2>
+				<ul>
+					<li><a href="#installation">Installation</a></li>
+					<li><a href="#creating-a-server">Creating a Server</a></li>
+					<li><a href="#routing">Routing</a></li>
+					<li><a href="#middleware">Middleware</a></li>
+				</ul>
+				<h2>Reference Docs</h2>
+				<ul>
+					<li><a href="/docs/server.html">http-server</a></li>
+					<li><a href="/docs/router.html">router</a></li>
+					<li><a href="/docs/body-parser.html">body-parser</a></li>
+					<li><a href="/docs/query-parser.html">query-parser</a></li>
+					<li><a href="/docs/http-error.html">http-error</a></li>
+					<li><a href="/docs/express-middleware.html">express-middleware</a></li>
+				</ul>
+				<h2>Other Resources</h2>
+				<ul>
+					<li><a href="https://github.com/celeri-server">Our GitHub</a></li>
+					<li><a href="https://www.npmjs.com/~celeri">Our NPM</a></li>
+				</ul>
+			</nav>
 
-		<main>
-			<section id="installation">
-				<h2>Installation</h2>
-				<p>
-					Celeri can be installed from npm.
-				</p>
-				<pre class="language-bash"><code>
-					$ npm install --save @celeri/http-server
-				</code></pre>
-			</section>
+			<main>
+				<section id="installation">
+					<h2>Installation</h2>
+					<p>
+						Celeri can be installed from npm.
+					</p>
+					<pre class="language-bash"><code>
+						$ npm install --save @celeri/http-server
+					</code></pre>
+				</section>
 
-			<section id="creating-a-server">
-				<h2>Creating a Server</h2>
-				<p>
-					Creating a server is done with the <code>createServer()</code> function. It can be called in a couple
-					different ways depending on what you want to do. The easiest way to do this is to just call the function.
-					This will create a basic HTTP server for you, and build your app around it.
-				</p>
-				
-				<pre class="language-javascript"><code>
-					const { createServer } = require('@celeri/http-server');
+				<section id="creating-a-server">
+					<h2>Creating a Server</h2>
+					<p>
+						Creating a server is done with the <code>createServer()</code> function. It can be called in a couple
+						different ways depending on what you want to do. The easiest way to do this is to just call the function.
+						This will create a basic HTTP server for you, and build your app around it.
+					</p>
+					
+					<pre class="language-javascript"><code>
+						const { createServer } = require('@celeri/http-server');
 
-					// Create an app server that runs on HTTP
-					const app = createServer();
+						// Create an app server that runs on HTTP
+						const app = createServer();
 
-					// Always remember to start listening for requests
-					app.server.listen(8080);
-				</code></pre>
-				
-				<p>
-					If you need HTTPS, you can pass in an <code>ssl</code> field in a config object, as pass in all of the
-					<a href="https://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener">options</a>
-					supported by the built-in https module.
-				</p>
+						// Always remember to start listening for requests
+						app.server.listen(8080);
+					</code></pre>
+					
+					<p>
+						If you need HTTPS, you can pass in an <code>ssl</code> field in a config object, as pass in all of the
+						<a href="https://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener">options</a>
+						supported by the built-in https module.
+					</p>
 
-				<pre class="language-javascript"><code>
-					// Create an app server that runs on HTTPS
-					const app = createServer({
-						ssl: {
-							// ...
-						}
-					});
-				</code></pre>
+					<pre class="language-javascript"><code>
+						// Create an app server that runs on HTTPS
+						const app = createServer({
+							ssl: {
+								// ...
+							}
+						});
+					</code></pre>
 
-				<p>
-					If you need to build a custom server object (such as if you are working with HTTP/2 which is currently not
-					supported by built-in modules), you can pass one in using the <code>server</code> config value.
-				</p>
+					<p>
+						If you need to build a custom server object (such as if you are working with HTTP/2 which is currently not
+						supported by built-in modules), you can pass one in using the <code>server</code> config value.
+					</p>
 
-				<pre class="language-javascript"><code>
-					// Create your custom server
-					const spdy = require('spdy');
-					const server = spdy.createServer(/* ... */);
+					<pre class="language-javascript"><code>
+						// Create your custom server
+						const spdy = require('spdy');
+						const server = spdy.createServer(/* ... */);
 
-					// Create an app server that uses that server
-					const app = createServer({ server });
-				</code></pre>
+						// Create an app server that uses that server
+						const app = createServer({ server });
+					</code></pre>
 
-				<p>
-					And finally, you can also override the router used to route incomming requests to your endpoints. It defaults to
-					using the <code>RegexRouter</code> from <a href="/docs/router.html">@celeri/router</a>, but you can override it
-					with any class that follows the router interface, such as with the <code>TrieRouter</code> from the same module.
-				</p>
+					<p>
+						And finally, you can also override the router used to route incomming requests to your endpoints. It defaults to
+						using the <code>RegexRouter</code> from <a href="/docs/router.html">@celeri/router</a>, but you can override it
+						with any class that follows the router interface, such as with the <code>TrieRouter</code> from the same module.
+					</p>
 
-				<pre class="language-javascript"><code>
-					const { TrieRouter } = require('@celeri/router');
+					<pre class="language-javascript"><code>
+						const { TrieRouter } = require('@celeri/router');
 
-					// Create an app server that uses that server
-					const app = createServer({ router: TrieRouter });
-				</code></pre>
-			</section>
+						// Create an app server that uses that server
+						const app = createServer({ router: TrieRouter });
+					</code></pre>
+				</section>
 
-			<section id="routing">
-				<h2>Routing</h2>
+				<section id="routing">
+					<h2>Routing</h2>
 
-				<p>
-					Once you have created your app server, you can start routing requests. To do this, the first thing you have to
-					do is tell the server to use the router.
-				</p>
+					<p>
+						Once you have created your app server, you can start routing requests. To do this, the first thing you have to
+						do is tell the server to use the router.
+					</p>
 
-				<pre class="language-javascript"><code>
-					app.use(app.router({
-						// Tell the router how to handle requests that don't match an endpoint
-						notFound: ({ req, res }) => {
-							res.statusCode = 404;
+					<pre class="language-javascript"><code>
+						app.use(app.router({
+							// Tell the router how to handle requests that don't match an endpoint
+							notFound: ({ req, res }) => {
+								res.statusCode = 404;
+								res.setHeader('Content-Type', 'text/plain');
+								res.end(`Endpoint ${req.url} not found`);
+							}
+						}));
+					</code></pre>
+
+					<p>
+						With the router in place, you can start adding endpoints to your server. The server exposes methods for all the
+						major HTTP methods (<code>get</code>, <code>head</code>, <code>post</code>, <code>patch</code>, <code>put</code>
+						<code>delete</code>, and <code>options</code>).
+					</p>
+
+					<pre class="language-javascript"><code>
+						// Create a GET endpoint for /hello
+						app.get('/hello')
+							.use(({ req, res }) => {
+								res.statusCode = 200;
+								res.setHeader('Content-Type', 'text/plain');
+								res.end('Hello, World!');
+							});
+					</code></pre>
+
+					<p>
+						If you need to handle some other method, you can use the generic <code>route(method, route)</code> function (see
+						<a href="/docs/http-server.html#route">http-server docs</a> for more info).
+					</p>
+
+					<p>
+						The route that you pass to these methods can also include params using the <code>:param</code> syntax, as well as
+						globs using <code>**</code> to allow passing in any number of following path segments.
+					</p>
+
+					<pre class="language-javascript"><code>
+						// Matches requests like GET /user/123
+						app.get('/user/:id')
+							.use(async ({ req, res }) => {
+								// Your params are then available in the `req.params` object
+								const user = await getUser(req.params.id);
+
+								if (user) {
+									res.statusCode = 200;
+									res.setHeader('Content-Type', 'application/json');
+									res.end(JSON.stringify(user));
+								}
+
+								else {
+									res.statusCode = 404;
+									res.setHeader('Content-Type', 'text/plain');
+									res.end(`User with id ${req.params.id} not found`);
+								}
+							});
+
+						// Matches requests like GET /user/foo/bar/baz
+						app.get('/user/**')
+							.use(({ req, res }) => {
+								console.log(req.glob);  // "foo/bar/baz"
+							});
+					</code></pre>
+
+					<p>
+						Also, notice above we used an <code>async</code> function for our route handler. The <code>use</code> method
+						will wait for <code>async</code> functions (or functions that return a <code>Promise</code>) before moving on.
+					</p>
+				</section>
+
+				<section id="middleware">
+					<h2>Middleware</h2>
+					<p>
+						Celeri is built using a middleware pattern that allows you to easily add in pieces of code to run
+						during requests. A simple example of this would be a middleware that sets the content type of all
+						responses.
+					</p>
+
+					<pre class="language-javascript"><code>
+						// Create a middleware that sets the Content-Type on all requests
+						const contentType = (type) => {
+							return ({ res }) => {
+								res.setHeader('Content-Type', type);
+							};
+						};
+
+						// Add our new middleware in before the router
+						app.use(contentType('application/json'));
+						app.use(app.router);
+					</code></pre>
+
+					<p>
+						However, middlewares can also be provided to specific endpoints. For example, let's say that for
+						one particular endpoint, you actually want to return <code>text/plain</code> content. You can add
+						your <code>contentType</code> middleware specifically to that one endpoint like this:
+					</p>
+
+					<pre class="language-javascript"><code>
+						app.get('/hello')
+							.use(contentType('text/plain'))
+							.use(({ req, res }) => {
+								res.statusCode = 200;
+								res.end('Hai :3');
+							});
+					</code></pre>
+
+					<p>
+						The app as a whole is one big middleware pipeline, but each individual route is also its own middleware
+						pipeline. This is actually quite powerful. For an example, many servers need to be able to use the request
+						body for things like <code>POST</code> requests, and the first instinct might be to just add a middleware
+						to your whole app that parses the request body.
+					</p>
+
+					<pre class="language-javascript"><code>
+						// Now I have parsed request bodies :D
+						app.use(bodyParser);
+						app.use(app.router);
+					</code></pre>
+
+					<p>
+						But this can actually be wasteful. What about <code>GET</code> requests? They don't need body parsing, and
+						now you're wasting precious cpu cycles basically doing a no-op. But if you put the middleware on your endpoints
+						where it is actually used, then you don't waste time on requests that don't need it.
+					</p>
+
+					<pre class="language-javascript"><code>
+						// No body parser here
+						app.use(app.router);
+
+						// This endpoint doesn't need body parsing
+						app.get('/foo')
+							.use(({ req, res }) => {
+								// ...
+							});
+
+						// This request actually uses the body, so make sure we have it
+						app.post('/foo')
+							.use(bodyParser)
+							.use(({ req, res }) => {
+								console.log(req.body);
+							});
+					</code></pre>
+
+					<p>
+						Request body parsing might seem like a trivial example, seeing as it is such a small impact. So let's look at
+						a more impactful and realistic example - authentication and authorization. Let's say you write a couple middlewares
+						to handle auth.
+					</p>
+
+					<pre class="language-javascript"><code>
+						// We're going to use our http-error module to make things a little easier
+						const { HttpError } = require('@celeri/http-error');
+
+						const authenticate = async ({ req, res }) => {
+							req.user = await doAuthentication(req.headers.token);
+
+							if (! req.user) {
+								throw new HttpError(401, 'Authentication failed!');
+							}
+						};
+
+						const authorize = (requiredRole) => {
+							return async ({ req, res }) => {
+								const isAuthorized = await doAuthorization(req.user, requiredRole);
+
+								if (! isAuthorized) {
+									throw new HttpError(403, 'Authorization failed!');
+								}
+							};
+						};
+					</code></pre>
+
+					<p>
+						While you may genuinely want all of your endpoints to require authentication (although there is
+						usually an exception, like a signup endpoint), authorization rules change from endpoint to endpoint.
+						Now that becomes easy.
+					</p>
+
+					<pre class="language-javascript"><code>
+						app.get('/admin-stuff')
+							.use(authenticate)
+							.use(authorize('admin'))
+							.use(({ req, res }) => {
+								// If we made it here, we can assume that auth went well
+							});
+					</code></pre>
+
+					<h3>Error Middlewares</h3>
+
+					<p>
+						You may notice in the example above, we used <code>throw</code> to signal errors in our endpoint. If you
+						<code>throw</code> something, usually you also need to <code>catch</code> it to handle your error. Celeri
+						has a special <code>catch()</code> middleware function that works just like <code>use()</code>, except it
+						handles errors in your middleware pipeline.
+					</p>
+
+					<pre class="language-javascript"><code>
+						app.use(app.router);
+
+						// Let's add in an error handler
+						app.catch(({ req, res, error }) => {
+							res.status = 500;
 							res.setHeader('Content-Type', 'text/plain');
-							res.end(`Endpoint ${req.url} not found`);
-						}
-					}));
-				</code></pre>
-			</section>
+							res.end(`Oh no, something went wrong! ${error.message}`);
+						});
+					</code></pre>
+				</section>
+			</main>
+		</div>
 
-			<section id="middleware">
-				<h2>Middleware</h2>
-			</section>
-		</main>
+		<footer>
+			<p class="copyright">Copyright &copy; 2017 James Brumond</p>
+			<p class="license">
+				Celeri is licensed under the <a href="https://github.com/celeri-server/http-server/blob/master/license">ISC license</a>
+			</p>
+		</footer>
 	</div>
-
-	<footer>
-		<p class="copyright">Copyright &copy; 2017 James Brumond</p>
-		<p class="license">
-			Celeri is licensed under the <a href="https://github.com/celeri-server/http-server/blob/master/license">ISC license</a>
-		</p>
-	</footer>
 
 	<script src="/scripts/prism.js"></script>
 </body>
