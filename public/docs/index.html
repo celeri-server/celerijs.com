@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+	<title>Docs / Celeri</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i" />
+	<link rel="stylesheet" href="/styles/main.css" />
+	<link rel="stylesheet" href="/styles/prism.css" />
+</head>
+<body>
+	<header>
+		<h1>
+			Celeri
+			<small>
+				<a href="https://github.com/celeri-server/http-server/releases">v1.1.0</a>
+			</small>
+		</h1>
+		<small><span class="latin">latin</span> - adjective: fast, swift, rapid</small>
+		<p>
+			A fast and simple HTTP server library for <a href="http://nodejs.org">Node.js</a>
+		</p>
+	</header>
+
+	<main>
+		<section class="getting-started">
+			<h2>Getting Started</h2>
+			<p>
+				Getting started is easy! First, install Celeri:
+			</p>
+			<pre class="language-bash"><code>
+				$ npm install --save @celeri/http-server
+			</code></pre>
+			<p>
+				Then, load in the module and make a server!
+			</p>
+			<pre class="language-javascript"><code>
+				const { createServer } = require('@celeri/http-server');
+
+				const app = createServer();
+				app.use(app.router);
+
+				app.get('/hello-world')
+					.use(({ req, res }) => {
+						res.statusCode = 200;
+						res.setHeader('Content-Type', 'text/plain');
+						res.end('Hello, World!');
+					});
+
+				app.server.listen(8080);
+			</code></pre>
+			<p>
+				Take a look at the <a href="https://github.com/celeri-server/example">example project</a> on our
+				github for an example of a fully functional server or the <a href="/docs">reference documentation</a>
+				for more detailed information.
+			</p>
+		</section>
+
+		<section class="modules">
+			<h2>Modules</h2>
+			<p>
+				Celeri has many supporting modules that you can choose to use to add extra features to your server. Here
+				are some of the most common modules:
+			</p>
+			<dl>
+				<dt><a href="/docs/router.html">@celeri/router</a></dt>
+				<dd>
+					The router that Celeri uses to route incoming requests to the right endpoint. There are two implementations
+					available depending on your needs - <code>RegexRouter</code> and <code>TrieRouter</code>.
+				</dd>
+
+				<dt><a href="/docs/body-parser.html">@celeri/body-parser</a></dt>
+				<dd>
+					Automatically parses incoming request bodies and makes them available to your endpoints.
+				</dd>
+
+				<dt><a href="/docs/query-parser.html">@celeri/query-parser</a></dt>
+				<dd>
+					Automatically parses query strings on incoming requests and makes them available to your endpoints.
+				</dd>
+
+				<dt><a href="/docs/http-error.html">@celeri/http-error</a></dt>
+				<dd>
+					Provides a simple interface for throwing errors to be handled as HTTP error responses.
+				</dd>
+
+				<dt><a href="/docs/express-middleware.html">@celeri/express-middleware</a></dt>
+				<dd>
+					Converts middleware written for <a href="https://expressjs.com">Express</a> style apps into middlewares
+					that will work with Celeri.
+				</dd>
+			</dl>
+		</section>
+	</main>
+
+	<footer>
+		<p class="copyright">Copyright &copy; 2017 James Brumond</p>
+		<p class="license">
+			Celeri is licensed under the <a href="https://github.com/celeri-server/http-server/blob/master/license">ISC license</a>
+		</p>
+	</footer>
+
+	<script src="/scripts/prism.js"></script>
+</body>
+</html>
