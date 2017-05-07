@@ -4,93 +4,127 @@
 	<title>Docs / Celeri</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i" />
-	<link rel="stylesheet" href="/styles/main.css" />
+	<link rel="stylesheet" href="/styles/docs.css" />
 	<link rel="stylesheet" href="/styles/prism.css" />
 </head>
 <body>
 	<header>
 		<h1>
-			Celeri
+			<a href="/">Celeri</a>
 			<small>
 				<a href="https://github.com/celeri-server/http-server/releases">v1.1.0</a>
 			</small>
 		</h1>
-		<small><span class="latin">latin</span> - adjective: fast, swift, rapid</small>
-		<p>
-			A fast and simple HTTP server library for <a href="http://nodejs.org">Node.js</a>
-		</p>
 	</header>
 
-	<main>
-		<section class="getting-started">
-			<h2>Getting Started</h2>
-			<p>
-				Getting started is easy! First, install Celeri:
-			</p>
-			<pre class="language-bash"><code>
-				$ npm install --save @celeri/http-server
-			</code></pre>
-			<p>
-				Then, load in the module and make a server!
-			</p>
-			<pre class="language-javascript"><code>
-				const { createServer } = require('@celeri/http-server');
+	<div class="content-wrapper">
+		<nav>
+			<h2>Documenation</h2>
+			<ul>
+				<li><a href="#installation">Installation</a></li>
+				<li><a href="#creating-a-server">Creating a Server</a></li>
+				<li><a href="#routing">Routing</a></li>
+				<li><a href="#middleware">Middleware</a></li>
+			</ul>
+		</nav>
 
-				const app = createServer();
-				app.use(app.router);
+		<main>
+			<section id="installation">
+				<h2>Installation</h2>
+				<p>
+					Celeri can be installed from npm.
+				</p>
+				<pre class="language-bash"><code>
+					$ npm install --save @celeri/http-server
+				</code></pre>
+			</section>
 
-				app.get('/hello-world')
-					.use(({ req, res }) => {
-						res.statusCode = 200;
-						res.setHeader('Content-Type', 'text/plain');
-						res.end('Hello, World!');
+			<section id="creating-a-server">
+				<h2>Creating a Server</h2>
+				<p>
+					Creating a server is done with the <code>createServer()</code> function. It can be called in a couple
+					different ways depending on what you want to do. The easiest way to do this is to just call the function.
+					This will create a basic HTTP server for you, and build your app around it.
+				</p>
+				
+				<pre class="language-javascript"><code>
+					const { createServer } = require('@celeri/http-server');
+
+					// Create an app server that runs on HTTP
+					const app = createServer();
+
+					// Always remember to start listening for requests
+					app.server.listen(8080);
+				</code></pre>
+				
+				<p>
+					If you need HTTPS, you can pass in an <code>ssl</code> field in a config object, as pass in all of the
+					<a href="https://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener">options</a>
+					supported by the built-in https module.
+				</p>
+
+				<pre class="language-javascript"><code>
+					// Create an app server that runs on HTTPS
+					const app = createServer({
+						ssl: {
+							// ...
+						}
 					});
+				</code></pre>
 
-				app.server.listen(8080);
-			</code></pre>
-			<p>
-				Take a look at the <a href="https://github.com/celeri-server/example">example project</a> on our
-				github for an example of a fully functional server or the <a href="/docs">reference documentation</a>
-				for more detailed information.
-			</p>
-		</section>
+				<p>
+					If you need to build a custom server object (such as if you are working with HTTP/2 which is currently not
+					supported by built-in modules), you can pass one in using the <code>server</code> config value.
+				</p>
 
-		<section class="modules">
-			<h2>Modules</h2>
-			<p>
-				Celeri has many supporting modules that you can choose to use to add extra features to your server. Here
-				are some of the most common modules:
-			</p>
-			<dl>
-				<dt><a href="/docs/router.html">@celeri/router</a></dt>
-				<dd>
-					The router that Celeri uses to route incoming requests to the right endpoint. There are two implementations
-					available depending on your needs - <code>RegexRouter</code> and <code>TrieRouter</code>.
-				</dd>
+				<pre class="language-javascript"><code>
+					// Create your custom server
+					const spdy = require('spdy');
+					const server = spdy.createServer(/* ... */);
 
-				<dt><a href="/docs/body-parser.html">@celeri/body-parser</a></dt>
-				<dd>
-					Automatically parses incoming request bodies and makes them available to your endpoints.
-				</dd>
+					// Create an app server that uses that server
+					const app = createServer({ server });
+				</code></pre>
 
-				<dt><a href="/docs/query-parser.html">@celeri/query-parser</a></dt>
-				<dd>
-					Automatically parses query strings on incoming requests and makes them available to your endpoints.
-				</dd>
+				<p>
+					And finally, you can also override the router used to route incomming requests to your endpoints. It defaults to
+					using the <code>RegexRouter</code> from <a href="/docs/router.html">@celeri/router</a>, but you can override it
+					with any class that follows the router interface, such as with the <code>TrieRouter</code> from the same module.
+				</p>
 
-				<dt><a href="/docs/http-error.html">@celeri/http-error</a></dt>
-				<dd>
-					Provides a simple interface for throwing errors to be handled as HTTP error responses.
-				</dd>
+				<pre class="language-javascript"><code>
+					const { TrieRouter } = require('@celeri/router');
 
-				<dt><a href="/docs/express-middleware.html">@celeri/express-middleware</a></dt>
-				<dd>
-					Converts middleware written for <a href="https://expressjs.com">Express</a> style apps into middlewares
-					that will work with Celeri.
-				</dd>
-			</dl>
-		</section>
-	</main>
+					// Create an app server that uses that server
+					const app = createServer({ router: TrieRouter });
+				</code></pre>
+			</section>
+
+			<section id="routing">
+				<h2>Routing</h2>
+
+				<p>
+					Once you have created your app server, you can start routing requests. To do this, the first thing you have to
+					do is tell the server to use the router.
+				</p>
+
+				<pre class="language-javascript"><code>
+					app.use(app.router({
+						// Tell the router how to handle requests that don't match an endpoint
+						notFound: ({ req, res }) => {
+							res.statusCode = 404;
+							res.setHeader('Content-Type', 'text/plain');
+							res.end(`Endpoint ${req.url} not found`);
+						}
+					}));
+				</code></pre>
+			</section>
+
+			<section id="middleware">
+				<h2>Middleware</h2>
+			</section>
+		</main>
+	</div>
 
 	<footer>
 		<p class="copyright">Copyright &copy; 2017 James Brumond</p>
