@@ -109,31 +109,6 @@ main {
 	flex: 0 0 calc(100% - 300px);
 }
 
-@media (max-width: 600px) {
-	header {
-		padding: 25px;
-	}
-
-	header small,
-	header p {
-		margin-left: 25px;
-	}
-
-	main {
-		padding: 0 25px;
-	}
-
-	nav,
-	main {
-		width: 100%;
-		flex: 0 0 100%;
-	}
-
-	pre {
-		font-size: 12px;
-	}
-}
-
 main section {
 	padding-bottom: 50px;
 }
@@ -184,4 +159,33 @@ footer p {
 	color: #888;
 	font-size: 12px;
 	margin: 5px;
+}
+
+@media (max-width: 600px) {
+	header {
+		padding: 25px;
+	}
+
+	header small,
+	header p {
+		margin-left: 25px;
+	}
+
+	.content-wrapper {
+		padding: 0 25px;
+	}
+
+	nav,
+	main {
+		width: 100%;
+		flex: 0 0 100%;
+	}
+
+	pre {
+		font-size: 12px;
+	}
+
+	main section > :not(h2) {
+		margin-left: 10px !important;
+	}
 }
