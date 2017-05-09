@@ -12,7 +12,7 @@
 		<h1>
 			<a href="/">Celeri</a>
 			<small>
-				<a href="https://github.com/celeri-server/http-server/releases">v1.1.1</a>
+				<a href="https://github.com/celeri-server/http-server/releases">v1.1.2</a>
 			</small>
 		</h1>
 	</header>
@@ -35,7 +35,16 @@
 					<li><a href="/docs/query-parser.html">query-parser</a></li>
 					<li><a href="/docs/http-error.html">http-error</a></li>
 					<li><a href="/docs/express-middleware.html">express-middleware</a></li>
-					<li><a href="/docs/middleware-pipeline.html">middleware-pipeline</a></li>
+					<li>
+						<a href="/docs/middleware-pipeline.html">middleware-pipeline</a>
+						<ul>
+							<li><a href="/docs/middleware-pipeline.html#installation">Installation</a></li>
+							<li><a href="/docs/middleware-pipeline.html#middlewarepipeline">MiddlewarePipeline</a></li>
+							<li><a href="/docs/middleware-pipeline.html#middlewarepipeline-use">MiddlewarePipeline::use()</a></li>
+							<li><a href="/docs/middleware-pipeline.html#middlewarepipeline-catch">MiddlewarePipeline::catch()</a></li>
+							<li><a href="/docs/middleware-pipeline.html#middlewarepipeline-run">MiddlewarePipeline::run()</a></li>
+						</ul>
+					</li>
 				</ul>
 				<h2>Other Resources</h2>
 				<ul>
@@ -45,18 +54,41 @@
 			</nav>
 
 			<main>
-				<!-- <section id="installation">
+				<section id="installation">
 					<h2>Installation</h2>
-					<pre class="language-bash"><code>
-						$ npm install - -save @celeri/http-server
-					</code></pre>
-				</section> -->
-
-				<section id="coming-soon">
-					<h2>Coming Soon</h2>
 					<p>
-						Documentation for this module is still being written. Try checking back in in a couple days.
+						The middleware-pipeline is a dependency of <code>@celeri/http-server</code> and will be installed
+						automatically when you use Celeri, but if you want to use it directly for something else, you can
+						install it with npm:
 					</p>
+					<pre class="language-bash"><code>
+						$ npm install --save @celeri/middleware-pipeline
+					</code></pre>
+				</section>
+
+				<section id="middlewarepipeline">
+					<h2>MiddlewarePipeline</h2>
+
+					<pre class="language-javascript"><code>
+						const { MiddlewarePipeline } = require('@celeri/middleware-pipeline');
+
+						const middlewarePipeline = new MiddlewarePipeline();
+					</code></pre>
+
+					<p>
+						Class for creating new <code>MiddlewarePipeline</code> objects that will run a given set of middlewares
+						over any given input.
+					</p>
+				</section>
+
+				<section id="middlewarepipeline-use">
+					<h2>MiddlewarePipeline::use()</h2>
+
+					<pre class="language-javascript"><code>
+						middlewarePipeline.use(middleware);
+					</code></pre>
+
+					
 				</section>
 			</main>
 		</div>
