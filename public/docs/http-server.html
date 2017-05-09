@@ -231,38 +231,268 @@
 
 				<section id="server-get">
 					<h2>Server::get()</h2>
+
+					<pre class="language-javascript"><code>
+						const route = server.get(routePattern);
+					</code></pre>
+
+					<p>
+						Adds a new <code>GET</code> route to the router.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>routePattern</dt>
+						<dd>
+							The route pattern string that this route should match. See <a href="/docs#routing">Routing</a>
+							documentation for more info.
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						Returns a new route object, which inherits from <code>MiddlewarePipeline</code>.
+					</p>
 				</section>
 
 				<section id="server-head">
 					<h2>Server::head()</h2>
+
+					<pre class="language-javascript"><code>
+						const route = server.head(routePattern);
+					</code></pre>
+
+					<p>
+						Adds a new <code>HEAD</code> route to the router.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>routePattern</dt>
+						<dd>
+							The route pattern string that this route should match. See <a href="/docs#routing">Routing</a>
+							documentation for more info.
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						Returns a new route object, which inherits from <code>MiddlewarePipeline</code>.
+					</p>
 				</section>
 
 				<section id="server-post">
 					<h2>Server::post()</h2>
+
+					<pre class="language-javascript"><code>
+						const route = server.post(routePattern);
+					</code></pre>
+
+					<p>
+						Adds a new <code>POST</code> route to the router.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>routePattern</dt>
+						<dd>
+							The route pattern string that this route should match. See <a href="/docs#routing">Routing</a>
+							documentation for more info.
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						Returns a new route object, which inherits from <code>MiddlewarePipeline</code>.
+					</p>
 				</section>
 
 				<section id="server-put">
 					<h2>Server::put()</h2>
+
+					<pre class="language-javascript"><code>
+						const route = server.put(routePattern);
+					</code></pre>
+
+					<p>
+						Adds a new <code>PUT</code> route to the router.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>routePattern</dt>
+						<dd>
+							The route pattern string that this route should match. See <a href="/docs#routing">Routing</a>
+							documentation for more info.
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						Returns a new route object, which inherits from <code>MiddlewarePipeline</code>.
+					</p>
 				</section>
 
 				<section id="server-patch">
 					<h2>Server::patch</h2>
+
+					<pre class="language-javascript"><code>
+						const route = server.patch(routePattern);
+					</code></pre>
+
+					<p>
+						Adds a new <code>PATCH</code> route to the router.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>routePattern</dt>
+						<dd>
+							The route pattern string that this route should match. See <a href="/docs#routing">Routing</a>
+							documentation for more info.
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						Returns a new route object, which inherits from <code>MiddlewarePipeline</code>.
+					</p>
 				</section>
 
 				<section id="server-delete">
 					<h2>Server::delete()</h2>
+
+					<pre class="language-javascript"><code>
+						const route = server.delete(routePattern);
+					</code></pre>
+
+					<p>
+						Adds a new <code>DELETE</code> route to the router.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>routePattern</dt>
+						<dd>
+							The route pattern string that this route should match. See <a href="/docs#routing">Routing</a>
+							documentation for more info.
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						Returns a new route object, which inherits from <code>MiddlewarePipeline</code>.
+					</p>
 				</section>
 
 				<section id="server-options">
 					<h2>Server::options()</h2>
+
+					<pre class="language-javascript"><code>
+						const route = server.options(routePattern);
+					</code></pre>
+
+					<p>
+						Adds a new <code>OPTIONS</code> route to the router.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>routePattern</dt>
+						<dd>
+							The route pattern string that this route should match. See <a href="/docs#routing">Routing</a>
+							documentation for more info.
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						Returns a new route object, which inherits from <code>MiddlewarePipeline</code>.
+					</p>
 				</section>
 
 				<section id="server-router">
 					<h2>Server::router()</h2>
+
+					<pre class="language-javascript"><code>
+						const routerMiddleware = server.router(options);
+					</code></pre>
+
+					<p>
+						Creates a middleware function for the router. This can then be registered into the request middleware
+						pipeline using the <a href="/docs/http-server.html#server-use">Server::use()</a> method.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>options</dt>
+						<dd>
+							An options object in the form of <code>{ notFound }</code>.
+							<dl>
+								<dt>notFound</dt>
+								<dd>
+									A function that runs when a request doesn't match any of the registered routes in the
+									router. Should usually be used to send a <code>404</code> response to the client.
+								</dd>
+							</dl>
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						Returns a new route object, which inherits from <code>MiddlewarePipeline</code>.
+					</p>
 				</section>
 
 				<section id="server-onrequest">
 					<h2>Server::onRequest()</h2>
+
+					<pre class="language-javascript"><code>
+						const promise = server.onRequest(req, res);
+					</code></pre>
+
+					<p>
+						Internal method that is registered to the underlying server's <code>.on('request')</code> event. This
+						then runs the middleware pipeline for the new request. This method should generally not be used for
+						anything but it's internal use.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>req</dt>
+						<dd>
+							The request object from the server.
+						</dd>
+
+						<dt>res</dt>
+						<dd>
+							The response object from the server.
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						Returns a <code>Promise</code> that is fullfilled when the middleware pipeline has finished running. If
+						the final state of the request was an unhandled error, this promise will be rejected.
+					</p>
 				</section>
 			</main>
 		</div>
