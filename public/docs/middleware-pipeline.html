@@ -77,7 +77,19 @@
 
 					<p>
 						Class for creating new <code>MiddlewarePipeline</code> objects that will run a given set of middlewares
-						over any given input.
+						over any given input. Middlewares added to the pipeline will be executed in order for each input given.
+						You can think of a middleware pipeline almost like a function that runs a big chain of promises each time
+						it is called, except that each function in the pipeline is always given the original input, and not the
+						result of the previous function. Like with a chain of promises, if an error occurs, it will fall through
+						the rest of the middlewares until it reaches a <code>.catch()</code>, and then after that (unless the catch
+						also results in an error) it will continue running, assuming the error was handled.
+					</p>
+
+					<p>
+						Middleware pipelines are asynchronous by nature, and can accept <code>async</code> functions, or functions
+						that return a <code>Promise</code>. The pipeline will then <code>await</code> the completion of each
+						middleware before moving on. If a given middleware is not asynchronous, it will simply run it synchronously
+						and then continue on.
 					</p>
 				</section>
 
@@ -88,7 +100,88 @@
 						middlewarePipeline.use(middleware);
 					</code></pre>
 
-					
+					<p>
+						Adds a new middleware function to the end of the pipeline.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>middleware</dt>
+						<dd>
+							<p>
+								The middleware function to add to the pipeline.
+							</p>
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						Returns the <code>middlewarePipeline</code> instance.
+					</p>
+				</section>
+
+				<section id="middlewarepipeline-catch">
+					<h2>MiddlewarePipeline::catch()</h2>
+
+					<pre class="language-javascript"><code>
+						middlewarePipeline.catch(errorHandler);
+					</code></pre>
+
+					<p>
+						Adds a new error handling middleware to the end of the pipeline. Error handlers are called
+						only when an error has occured upstream in the middleware pipeline, and will contain an extra
+						<code>error</code> property on the input object.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>errorHandler</dt>
+						<dd>
+							<p>
+								The error handler function to add to the pipeline.
+							</p>
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						Returns the <code>middlewarePipeline</code> instance.
+					</p>
+				</section>
+
+				<section id="middlewarepipeline-run">
+					<h2>MiddlewarePipeline::run()</h2>
+
+					<pre class="language-javascript"><code>
+						const promise = middlewarePipeline.run(input);
+					</code></pre>
+
+					<p>
+						Runs the pipeline with the given input. The input value is then passed into each defined middleware
+						as they are run.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>input</dt>
+						<dd>
+							<p>
+								An input object that should be passed into each middleware function.
+							</p>
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						Returns a <code>Promise</code> that will resolve (or reject if the final state of the pipeline is an error)
+						when the pipeline finishes running.
+					</p>
 				</section>
 			</main>
 		</div>
