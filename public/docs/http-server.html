@@ -1,0 +1,280 @@
+<!doctype html>
+<html>
+<head>
+	<title>Docs (http-server) / Celeri</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i" />
+	<link rel="stylesheet" href="/styles/docs.css" />
+	<link rel="stylesheet" href="/styles/prism.css" />
+</head>
+<body>
+	<header>
+		<h1>
+			<a href="/">Celeri</a>
+			<small>
+				<a href="https://github.com/celeri-server/http-server/releases">v1.1.1</a>
+			</small>
+		</h1>
+	</header>
+
+	<div class="content-wrapper">
+		<div class="body">
+			<nav>
+				<h2>Introduction</h2>
+				<ul>
+					<li><a href="/docs#installation">Installation</a></li>
+					<li><a href="/docs#creating-a-server">Creating a Server</a></li>
+					<li><a href="/docs#routing">Routing</a></li>
+					<li><a href="/docs#middleware">Middleware</a></li>
+				</ul>
+				<h2>Reference Docs</h2>
+				<ul>
+					<li>
+						<a href="/docs/http-server.html">http-server</a>
+						<ul>
+							<li><a href="/docs/http-server.html#installation">Installation</a></li>
+							<li><a href="/docs/http-server.html#createserver">createServer()</a></li>
+							<li><a href="/docs/http-server.html#server-server">Server::server</a></li>
+							<li><a href="/docs/http-server.html#server-use">Server::use()</a></li>
+							<li><a href="/docs/http-server.html#server-catch">Server::catch()</a></li>
+							<li><a href="/docs/http-server.html#server-route">Server::route()</a></li>
+							<li><a href="/docs/http-server.html#server-get">Server::get()</a></li>
+							<li><a href="/docs/http-server.html#server-head">Server::head()</a></li>
+							<li><a href="/docs/http-server.html#server-post">Server::post()</a></li>
+							<li><a href="/docs/http-server.html#server-put">Server::put()</a></li>
+							<li><a href="/docs/http-server.html#server-patch">Server::patch()</a></li>
+							<li><a href="/docs/http-server.html#server-delete">Server::delete()</a></li>
+							<li><a href="/docs/http-server.html#server-options">Server::options()</a></li>
+							<li><a href="/docs/http-server.html#server-router">Server::router()</a></li>
+							<li><a href="/docs/http-server.html#server-onrequest">Server::onRequest()</a></li>
+						</ul>
+					</li>
+					<li><a href="/docs/router.html">router</a></li>
+					<li><a href="/docs/body-parser.html">body-parser</a></li>
+					<li><a href="/docs/query-parser.html">query-parser</a></li>
+					<li><a href="/docs/http-error.html">http-error</a></li>
+					<li><a href="/docs/express-middleware.html">express-middleware</a></li>
+				</ul>
+				<h2>Other Resources</h2>
+				<ul>
+					<li><a href="https://github.com/celeri-server">Our GitHub</a></li>
+					<li><a href="https://www.npmjs.com/~celeri">Our NPM</a></li>
+				</ul>
+			</nav>
+
+			<main>
+				<section id="installation">
+					<h2>Installation</h2>
+					<pre class="language-bash"><code>
+						$ npm install --save @celeri/http-server
+					</code></pre>
+				</section>
+				
+				<section id="createserver">
+					<h2>createServer()</h2>
+					<pre class="language-javascript"><code>
+						const { createServer } = require('@celeri/http-server');
+
+						const server = createServer(config);
+					</code></pre>
+					<p>
+						Creates a new instance of the <code>Server</code> class. Takes in a config object to control how
+						the server is constructed.
+					</p>
+
+					<h3>Parameters</h3>
+					
+					<dl>
+						<dt>config</dt>
+						<dd>
+							<p>The configuration object, containing some set of the following options:</p>
+							<dl>
+								<dt>ssl</dt>
+								<dd>
+									<p>
+										Contains the SSL configuration to be used for the newly created HTTPS server. Can contain any
+										<a href="https://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener">
+										valid values from Node's TLS config</a>. Cannot be used with the <code>server</code> config
+										value.
+									</p>
+								</dd>
+
+								<dt>server</dt>
+								<dd>
+									<p>
+										A fully constructed server to be inherited by the new <code>Server</code> instance. This
+										is useful in cases such as HTTP/2, which is not natively supported, so that you can use
+										your own underlying server. Cannot be used with the <code>ssl</code> config value.
+									</p>
+								</dd>
+
+								<dt>router</dt>
+								<dd>
+									<p>
+										The router class to use for routing incomming traffic. Defaults to
+										<a href="/docs/router.html#regexrouter">RegexRouter</a>.
+									</p>
+								</dd>
+							</dl>
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						Returns a new instance of the <code>Server</code> class.
+					</p>
+				</section>
+
+				<section id="server-server">
+					<h2>Server::server</h2>
+
+					<p>
+						A readonly property that provides access to the underlying server object. Unless the <code>server</code>
+						config is used to override the behavior, this will be an instance created from the built-in
+						<code>http.createServer</code> or <code>https.createServer</code>.
+					</p>
+				</section>
+
+				<section id="server-use">
+					<h2>Server::use()</h2>
+
+					<pre class="language-javascript"><code>
+						server.use(middleware);
+					</code></pre>
+
+					<p>
+						Adds a new middleware to the end of the request middleware pipeline. Middlewares run in the order in which
+						they are added, so the order in which you make multiple calls to <code>use()</code> is important.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>middleware</dt>
+						<dd>
+							A function accepting an object in the form <code>{ req, res }</code>, where <code>req</code> and
+							<code>res</code> are the request and response objects (respectively) created by the HTTP server.
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						<em>None</em>
+					</p>
+				</section>
+
+				<section id="server-catch">
+					<h2>Server::catch()</h2>
+
+					<pre class="language-javascript"><code>
+						server.catch(errorHandler);
+					</code></pre>
+
+					<p>
+						Adds a new error handling middleware to the end of the request middleware pipeline. Like with <code>use()</code>,
+						the order in which you make multiple calls to <code>catch()</code> is important as middlewares always run in
+						the order they are defined.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>errorHandler</dt>
+						<dd>
+							A function accepting an object in the form <code>{ req, res, error }</code>, where <code>req</code> and
+							<code>res</code> are the request and response objects (respectively) created by the HTTP server, and
+							<code>error</code> is the error that was thrown.
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						<em>None</em>
+					</p>
+				</section>
+
+				<section id="server-route">
+					<h2>Server::route()</h2>
+
+					<pre class="language-javascript"><code>
+						const route = server.route(method, routePattern);
+					</code></pre>
+
+					<p>
+						Adds a new route to the router.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>method</dt>
+						<dd>
+							The HTTP method (in lower case) that this route should match.
+						</dd>
+
+						<dt>routePattern</dt>
+						<dd>
+							The route pattern string that this route should match. See <a href="/docs#routing">Routing</a>
+							documentation for more info.
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+
+					<p>
+						Returns a new route object, which inherits from <code>MiddlewarePipeline</code>.
+					</p>
+				</section>
+
+				<section id="server-get">
+					<h2>Server::get()</h2>
+				</section>
+
+				<section id="server-head">
+					<h2>Server::head()</h2>
+				</section>
+
+				<section id="server-post">
+					<h2>Server::post()</h2>
+				</section>
+
+				<section id="server-put">
+					<h2>Server::put()</h2>
+				</section>
+
+				<section id="server-patch">
+					<h2>Server::patch</h2>
+				</section>
+
+				<section id="server-delete">
+					<h2>Server::delete()</h2>
+				</section>
+
+				<section id="server-options">
+					<h2>Server::options()</h2>
+				</section>
+
+				<section id="server-router">
+					<h2>Server::router()</h2>
+				</section>
+
+				<section id="server-onrequest">
+					<h2>Server::onRequest()</h2>
+				</section>
+			</main>
+		</div>
+
+		<footer>
+			<p class="copyright">Copyright &copy; 2017 James Brumond</p>
+			<p class="license">
+				Celeri is licensed under the <a href="https://github.com/celeri-server/http-server/blob/master/license">ISC license</a>
+			</p>
+		</footer>
+	</div>
+
+	<script src="/scripts/prism.js"></script>
+</body>
+</html>

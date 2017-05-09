@@ -22,14 +22,14 @@
 			<nav>
 				<h2>Introduction</h2>
 				<ul>
-					<li><a href="#installation">Installation</a></li>
-					<li><a href="#creating-a-server">Creating a Server</a></li>
-					<li><a href="#routing">Routing</a></li>
-					<li><a href="#middleware">Middleware</a></li>
+					<li><a href="/docs#installation">Installation</a></li>
+					<li><a href="/docs#creating-a-server">Creating a Server</a></li>
+					<li><a href="/docs#routing">Routing</a></li>
+					<li><a href="/docs#middleware">Middleware</a></li>
 				</ul>
 				<h2>Reference Docs</h2>
 				<ul>
-					<li><a href="/docs/server.html">http-server</a></li>
+					<li><a href="/docs/http-server.html">http-server</a></li>
 					<li><a href="/docs/router.html">router</a></li>
 					<li><a href="/docs/body-parser.html">body-parser</a></li>
 					<li><a href="/docs/query-parser.html">query-parser</a></li>
@@ -73,7 +73,7 @@
 					</code></pre>
 					
 					<p>
-						If you need HTTPS, you can pass in an <code>ssl</code> field in a config object, as pass in all of the
+						If you need HTTPS, you can pass in an <code>ssl</code> field in a config object, which accepts all of the
 						<a href="https://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener">options</a>
 						supported by the built-in https module.
 					</p>
@@ -211,7 +211,7 @@
 
 						// Add our new middleware in before the router
 						app.use(contentType('application/json'));
-						app.use(app.router);
+						app.use(app.router(/* ... */));
 					</code></pre>
 
 					<p>
@@ -239,7 +239,7 @@
 					<pre class="language-javascript"><code>
 						// Now I have parsed request bodies :D
 						app.use(bodyParser);
-						app.use(app.router);
+						app.use(app.router(/* ... */));
 					</code></pre>
 
 					<p>
@@ -250,7 +250,7 @@
 
 					<pre class="language-javascript"><code>
 						// No body parser here
-						app.use(app.router);
+						app.use(app.router(/* ... */));
 
 						// This endpoint doesn't need body parsing
 						app.get('/foo')
@@ -320,7 +320,7 @@
 					</p>
 
 					<pre class="language-javascript"><code>
-						app.use(app.router);
+						app.use(app.router(/* ... */));
 
 						// Let's add in an error handler
 						app.catch(({ req, res, error }) => {
