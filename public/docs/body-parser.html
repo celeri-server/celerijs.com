@@ -12,7 +12,7 @@
 		<h1>
 			<a href="/">Celeri</a>
 			<small>
-				<a href="https://github.com/celeri-server/http-server/releases">v1.1.2</a>
+				<a href="https://github.com/celeri-server/http-server/releases">v1.1.3</a>
 			</small>
 		</h1>
 	</header>
@@ -31,7 +31,13 @@
 				<ul>
 					<li><a href="/docs/http-server.html">http-server</a></li>
 					<li><a href="/docs/router.html">router</a></li>
-					<li><a href="/docs/body-parser.html">body-parser</a></li>
+					<li>
+						<a href="/docs/body-parser.html">body-parser</a>
+						<ul>
+							<li><a href="/docs/body-parser.html#installation">Installation</a></li>
+							<li><a href="/docs/body-parser.html#bodyparser">bodyParser()</a></li>
+						</ul>
+					</li>
 					<li><a href="/docs/query-parser.html">query-parser</a></li>
 					<li><a href="/docs/http-error.html">http-error</a></li>
 					<li><a href="/docs/express-middleware.html">express-middleware</a></li>
@@ -45,17 +51,44 @@
 			</nav>
 
 			<main>
-				<!-- <section id="installation">
+				<section id="installation">
 					<h2>Installation</h2>
 					<pre class="language-bash"><code>
-						$ npm install - -save @celeri/http-server
+						$ npm install --save @celeri/body-parser
 					</code></pre>
-				</section> -->
+				</section>
 
-				<section id="coming-soon">
-					<h2>Coming Soon</h2>
+				<section id="queryparser">
+					<h2>bodyParser()</h2>
+
+					<pre class="language-javascript"><code>
+						const { bodyParser } = require('@celeri/body-parser');
+
+						const bodyParserMiddleware = bodyParser();
+					</code></pre>
+					
 					<p>
-						Documentation for this module is still being written. Try checking back in in a couple days.
+						The body parser middleware parses JSON request bodies of incoming requests, providing the information
+						in the <code>req.body</code> property. Once a middleware is created, it can be used in routes, or
+						(less efficiently) globally in the app.
+					</p>
+
+					<pre class="language-javascript"><code>
+						const bodyParserMiddleware = bodyParser();
+
+						// This comes at a small performance cost
+						app.use(bodyParserMiddleware);
+
+						// This is more efficient
+						app.use(app.router({ /* ... */ }));
+						app.post('/foo')
+							.use(bodyParserMiddleware)
+							.use(({ req, res }) => { /* ... */ });
+					</code></pre>
+
+					<h3>Return Value</h3>
+					<p>
+						Returns a body parser middleware function.
 					</p>
 				</section>
 			</main>

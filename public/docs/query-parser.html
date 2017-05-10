@@ -12,7 +12,7 @@
 		<h1>
 			<a href="/">Celeri</a>
 			<small>
-				<a href="https://github.com/celeri-server/http-server/releases">v1.1.2</a>
+				<a href="https://github.com/celeri-server/http-server/releases">v1.1.3</a>
 			</small>
 		</h1>
 	</header>
@@ -32,7 +32,13 @@
 					<li><a href="/docs/http-server.html">http-server</a></li>
 					<li><a href="/docs/router.html">router</a></li>
 					<li><a href="/docs/body-parser.html">body-parser</a></li>
-					<li><a href="/docs/query-parser.html">query-parser</a></li>
+					<li>
+						<a href="/docs/query-parser.html">query-parser</a>
+						<ul>
+							<li><a href="/docs/query-parser.html#installation">Installation</a></li>
+							<li><a href="/docs/query-parser.html#queryparser">queryParser()</a></li>
+						</ul>
+					</li>
 					<li><a href="/docs/http-error.html">http-error</a></li>
 					<li><a href="/docs/express-middleware.html">express-middleware</a></li>
 					<li><a href="/docs/middleware-pipeline.html">middleware-pipeline</a></li>
@@ -45,17 +51,49 @@
 			</nav>
 
 			<main>
-				<!-- <section id="installation">
+				<section id="installation">
 					<h2>Installation</h2>
 					<pre class="language-bash"><code>
-						$ npm install - -save @celeri/http-server
+						$ npm install --save @celeri/query-parser
 					</code></pre>
-				</section> -->
+				</section>
 
-				<section id="coming-soon">
-					<h2>Coming Soon</h2>
+				<section id="queryparser">
+					<h2>queryParser()</h2>
+
+					<pre class="language-javascript"><code>
+						const { queryParser } = require('@celeri/query-parser');
+
+						const queryParserMiddleware = queryParser();
+					</code></pre>
+					
 					<p>
-						Documentation for this module is still being written. Try checking back in in a couple days.
+						The query parser middleware parses the query string of incoming requests, providing the information
+						in the <code>req.query</code> property. Once a middleware is created, it can be used in routes, or
+						(less efficiently) globally in the app.
+					</p>
+
+					<pre class="language-javascript"><code>
+						const queryParserMiddleware = queryParser();
+
+						// This comes at a small performance cost
+						app.use(queryParserMiddleware);
+
+						// This is more efficient
+						app.use(app.router({ /* ... */ }));
+						app.get('/foo')
+							.use(queryParserMiddleware)
+							.use(({ req, res }) => { /* ... */ });
+					</code></pre>
+
+					<p>
+						The <code>req.query</code> object will have the keys from your query string. For example, the query string
+						<code>?foo=bar</code> will result in an object like <code>{ foo: 'bar' }</code>.
+					</p>
+
+					<h3>Return Value</h3>
+					<p>
+						Returns a query string parser middleware function.
 					</p>
 				</section>
 			</main>

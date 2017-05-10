@@ -12,7 +12,7 @@
 		<h1>
 			<a href="/">Celeri</a>
 			<small>
-				<a href="https://github.com/celeri-server/http-server/releases">v1.1.2</a>
+				<a href="https://github.com/celeri-server/http-server/releases">v1.1.3</a>
 			</small>
 		</h1>
 	</header>
@@ -33,7 +33,14 @@
 					<li><a href="/docs/router.html">router</a></li>
 					<li><a href="/docs/body-parser.html">body-parser</a></li>
 					<li><a href="/docs/query-parser.html">query-parser</a></li>
-					<li><a href="/docs/http-error.html">http-error</a></li>
+					<li>
+						<a href="/docs/http-error.html">http-error</a>
+						<ul>
+							<li><a href="/docs/http-error.html#installation">Installation</a></li>
+							<li><a href="/docs/http-error.html#httperror">HttpError</a></li>
+							<li><a href="/docs/http-error.html#errorhandler">errorHandler()</a></li>
+						</ul>
+					</li>
 					<li><a href="/docs/express-middleware.html">express-middleware</a></li>
 					<li><a href="/docs/middleware-pipeline.html">middleware-pipeline</a></li>
 				</ul>
@@ -45,17 +52,81 @@
 			</nav>
 
 			<main>
-				<!-- <section id="installation">
+				<section id="installation">
 					<h2>Installation</h2>
 					<pre class="language-bash"><code>
-						$ npm install - -save @celeri/http-server
+						$ npm install --save @celeri/http-error
 					</code></pre>
-				</section> -->
+				</section>
 
-				<section id="coming-soon">
-					<h2>Coming Soon</h2>
+				<section id="httperror">
+					<h2>HttpError</h2>
+
+					<pre class="language-javascript"><code>
+						const { HttpError } = require('@celeri/http-error');
+
+						const error = new HttpError(statusCode, message);
+					</code></pre>
+
 					<p>
-						Documentation for this module is still being written. Try checking back in in a couple days.
+						The <code>HttpError</code> class, which extends the native <code>Error</code>, is used to represent HTTP
+						errors that should be sent to the client.
+					</p>
+
+					<h3>Parameters</h3>
+
+					<dl>
+						<dt>statusCode</dt>
+						<dd>
+							The HTTP status code for the error. (See <a href="https://httpstatuses.com/">httpstatuses.com</a> for an
+							easy to read list of status codes and their meanings).
+						</dd>
+
+						<dt>message</dt>
+						<dd>
+							A plain text error message representing what when wrong.
+						</dd>
+
+						<dt>meta</dt>
+						<dd>
+							Optional, additional meta data to attach to the error. For example, if the error is that the user given
+							input was invalid, <code>meta</code> might contain a list of which fields were invalid. This will be
+							available on the resulting error object in the <code>error.meta</code> property.
+						</dd>
+					</dl>
+				</section>
+
+				<section id="errorhandler">
+					<h2>errorHandler()</h2>
+
+					<pre class="language-javascript"><code>
+						const { errorHandler } = require('@celeri/http-error');
+
+						const errorHandlerMiddleware = errorHandler(responseFormatter);
+					</code></pre>
+
+					<p>
+						The <code>errorHandler</code> function creates an error middleware that can be used with the
+						<a href="/docs/http-server.html#server-catch">catch()</a> function. If the error that it is handling
+						is an <code>HttpError</code> instance, than it will send the status code of the error object to
+						the client. Otherwise, it will default to a <a href="https://httpstatuses.com/500">500 error</a>.
+						The error object will be passed into the given <code>responseFormatter</code> function, along with
+						the request and response objects in the form <code>{ req, res, error }</code>. The return value of
+						that call will then be sent to the client as a JSON response body.
+					</p>
+
+					<h3>Parameters</h3>
+					<dl>
+						<dt>responseFormatter</dt>
+						<dd>
+							A function that takes in <code>{ req, res, error }</code> and returns an object to be used as
+							the response body sent to the client.
+						</dd>
+					</dl>
+
+					<h3>Return Value</h3>
+					<p>
+						Returns an error middleware function.
 					</p>
 				</section>
 			</main>

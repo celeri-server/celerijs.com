@@ -12,7 +12,7 @@
 		<h1>
 			<a href="/">Celeri</a>
 			<small>
-				<a href="https://github.com/celeri-server/http-server/releases">v1.1.2</a>
+				<a href="https://github.com/celeri-server/http-server/releases">v1.1.3</a>
 			</small>
 		</h1>
 	</header>
@@ -34,7 +34,13 @@
 					<li><a href="/docs/body-parser.html">body-parser</a></li>
 					<li><a href="/docs/query-parser.html">query-parser</a></li>
 					<li><a href="/docs/http-error.html">http-error</a></li>
-					<li><a href="/docs/express-middleware.html">express-middleware</a></li>
+					<li>
+						<a href="/docs/express-middleware.html">express-middleware</a>
+						<ul>
+							<li><a href="/docs/express-middleware.html#installation">Installation</a></li>
+							<li><a href="/docs/express-middleware.html#convertmiddleware">convertMiddleware()</a></li>
+						</ul>
+					</li>
 					<li><a href="/docs/middleware-pipeline.html">middleware-pipeline</a></li>
 				</ul>
 				<h2>Other Resources</h2>
@@ -45,17 +51,29 @@
 			</nav>
 
 			<main>
-				<!-- <section id="installation">
+				<section id="installation">
 					<h2>Installation</h2>
 					<pre class="language-bash"><code>
-						$ npm install - -save @celeri/http-server
+						$ npm install --save @celeri/express-middleware
 					</code></pre>
-				</section> -->
+				</section>
 
-				<section id="coming-soon">
-					<h2>Coming Soon</h2>
+				<section id="convertmiddleware">
+					<h2>convertMiddleware()</h2>
+
+					<pre class="language-javascript"><code>
+						const { convertMiddleware } = require('@celeri/express-middleware');
+
+						const celeriMiddleware = convertMiddleware(expressMiddleware);
+					</code></pre>
+
 					<p>
-						Documentation for this module is still being written. Try checking back in in a couple days.
+						The <code>convertMiddleware()</code> function converts a middleware designed for <a href="http://expressjs.com/">
+						Express</a> into one that runs in Celeri. This includes mapping the <code>req</code>, <code>res</code> and
+						<code>error</code> inputs into the correct format for Celeri to use, as well as changing middlewares using
+						Express' <code>next()</code> function pattern into <code>async</code> functions. <em>Note</em>: we cannot
+						guarentee that this will work for all middlewares, as middlewares that interact with specifically Express
+						features may not have an equivilant in Celeri.
 					</p>
 				</section>
 			</main>
